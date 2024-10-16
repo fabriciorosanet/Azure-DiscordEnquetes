@@ -28,6 +28,6 @@ jobs:
 
     - name: Run bot
       env:
-        DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }} # Você precisa configurar esse segredo no repositório do GitHub
+        DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }} # Você precisa configurar esse segredo no repositório do GitHub
       run: |
         python Main.py
