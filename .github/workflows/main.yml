@@ -34,8 +34,11 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Run bot
+    # Rodar o bot por um tempo limitado (10 segundos no exemplo)
+    - name: Run bot for a limited time
       env:
         DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
       run: |
-        python main.py
+        python main.py &
+        sleep 10
+        kill $!
