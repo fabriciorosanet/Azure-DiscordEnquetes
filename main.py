@@ -15,7 +15,6 @@ from email import encoders
 DISCORD_TOKEN = os.getenv('DISCORD_TOKEN')  # O token já está configurado no portal do Azure
 senha = os.getenv('EMAIL_PASSWORD')  # Buscará a senha configurada nas variáveis de ambiente
 
-
 intents = discord.Intents.all()  # Habilita todas as permissões que o bot pode ter
 bot = commands.Bot(command_prefix='!', intents=intents)  # Cria uma instância do bot
 
