@@ -88,4 +88,5 @@ async def save_responses(ctx):
     else:
         await ctx.send("Nenhuma resposta registrada ainda.")
 
+
 bot.run(DISCORD_TOKEN)
