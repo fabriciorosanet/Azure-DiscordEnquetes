@@ -38,4 +38,4 @@ jobs:
       env:
         DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
       run: |
-        python Main.py  # Ajuste o caminho para Main.py se necessário
+        python main.py
