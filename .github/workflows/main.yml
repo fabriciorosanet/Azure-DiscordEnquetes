@@ -29,6 +29,6 @@ jobs:
     - name: Run bot
       env:
         DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }} # Você precisa configurar esse segredo no repositório do GitHub
-        EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
+    
       run: |
         python Main.py

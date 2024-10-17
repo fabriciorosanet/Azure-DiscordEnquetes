@@ -5,15 +5,9 @@ from pytz import timezone
 from datetime import datetime
 import asyncio
 import os
-import smtplib
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
-from email.mime.base import MIMEBase
-from email import encoders
 
 # Variável de ambiente obtida diretamente do sistema
 DISCORD_TOKEN = os.getenv('DISCORD_TOKEN')  # O token já está configurado no portal do Azure
-senha = os.getenv('EMAIL_PASSWORD')  # Buscará a senha configurada nas variáveis de ambiente
 
 intents = discord.Intents.all()  # Habilita todas as permissões que o bot pode ter
 bot = commands.Bot(command_prefix='!', intents=intents)  # Cria uma instância do bot
@@ -82,39 +76,7 @@ async def on_ready():
     else:
         print("Canal não encontrado. Verifique o ID.")
 
-# Função para enviar o arquivo CSV por email
-def enviar_email_com_anexo(destinatario, assunto, corpo, anexo_path):
-    remetente = "fabriciorosafiap@gmail.com"
-    senha = os.getenv('EMAIL_PASSWORD')  # Certifique-se de que a senha esteja configurada como variável de ambiente
-
-    msg = MIMEMultipart()
-    msg['From'] = remetente
-    msg['To'] = destinatario
-    msg['Subject'] = assunto
-
-    msg.attach(MIMEText(corpo, 'plain'))
-
-    # Anexando o arquivo CSV
-    attachment = open(anexo_path, "rb")
-    part = MIMEBase('application', 'octet-stream')
-    part.set_payload(attachment.read())
-    encoders.encode_base64(part)
-    part.add_header('Content-Disposition', f"attachment; filename= {os.path.basename(anexo_path)}")
-    msg.attach(part)
-
-    # Conectar ao servidor e enviar o email
-    try:
-        server = smtplib.SMTP('smtp.gmail.com', 587)
-        server.starttls()
-        server.login(remetente, senha)
-        text = msg.as_string()
-        server.sendmail(remetente, destinatario, text)
-        server.quit()
-        print("Email enviado com sucesso!")
-    except Exception as e:
-        print(f"Falha ao enviar email: {e}")
-
-# Comando para salvar as respostas no CSV e enviar por email
+# Comando para salvar as respostas no CSV
 @bot.command(name="salvar_respostas")
 async def save_responses(ctx):
     if responses_data:
@@ -123,12 +85,6 @@ async def save_responses(ctx):
         csv_path = 'respostas_enquete.csv'
         df.to_csv(csv_path, sep='§', encoding='utf-8', index=False)
         await ctx.send("Respostas salvas no arquivo 'respostas_enquete.csv'.")
-        
-        # Envia o CSV por email
-        destinatario = "eduardo.bortoli@alura.com.br"
-        assunto = "Respostas da enquete"
-        corpo = "Segue em anexo o arquivo CSV com as respostas da última enquete."
-        enviar_email_com_anexo(destinatario, assunto, corpo, csv_path)
     else:
         await ctx.send("Nenhuma resposta registrada ainda.")
 
